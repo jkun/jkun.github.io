@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2014/08/20/cocos2dx_video/</loc>
+    <lastmod>2014-08-20T14:51:38.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2014/08/18/firstblog/</loc>
     <lastmod>2014-08-18T08:53:12.000Z</lastmod>
   </url>
