@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://jkun.github.io/"/>
-  <updated>2014-08-28T14:37:26.305Z</updated>
+  <updated>2014-08-29T00:42:23.050Z</updated>
   <id>http://jkun.github.io/</id>
   
   <author>
@@ -16,10 +16,10 @@
   
   <entry>
     <title><![CDATA[cocos2dx_video]]></title>
-    <link href="http://jkun.github.io/2014/08/20/cocos2dx_video/"/>
-    <id>http://jkun.github.io/2014/08/20/cocos2dx_video/</id>
-    <published>2014-08-20T14:49:05.000Z</published>
-    <updated>2014-08-20T14:57:52.000Z</updated>
+    <link href="http://jkun.github.io/2014/08/28/cocos2dx_video/"/>
+    <id>http://jkun.github.io/2014/08/28/cocos2dx_video/</id>
+    <published>2014-08-28T14:49:05.000Z</published>
+    <updated>2014-08-29T00:42:11.000Z</updated>
     <content type="html"><![CDATA[<p>这篇文章主要总结在android上使用cocos2dx进行视频播放功能的使用。<br>一开始没有注意到cocos2dx的新版本已经集成这个功能，所以一直打算使用FFMpeg来进行相关的开发，经过同学提醒，使用cocos2dX自带的API，使得开发难度大大降低，只需要调用相关的API即可。</p>
 <p>在Cocos2dx中，进行视频播放的类为<code>VideoPlayer</code>，需要包含<code>ui/UIVideoPlayer.h</code>，然后可以再程序中使用<code>using namespace cocos2d::experimental::ui;</code>将命名空间引入进来。下边代码就是在程序启动之后即可播放相应的视频<br> <a id="more"></a></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">bool</span> HelloWorld::init()</div><div class="line">{</div><div class="line">    <span class="comment">//////////////////////////////</span></div><div class="line">    <span class="comment">// 1. super init first</span></div><div class="line">    <span class="keyword">if</span> ( !Layer::init() )</div><div class="line">    {</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    }</div><div class="line">    </div><div class="line">	_visibleRect = Director::getInstance()-&gt;getOpenGLView()-&gt;getVisibleRect();</div><div class="line">	MenuItemFont::setFontSize(<span class="number">16</span>);</div><div class="line"></div><div class="line">	<span class="keyword">auto</span> centerPos = Vec2(_visibleRect.origin.x + _visibleRect.size.width / <span class="number">2</span>, _visibleRect.origin.y + _visibleRect.size.height / <span class="number">2</span>);</div><div class="line"></div><div class="line">	_videoPlayer = VideoPlayer::create();</div><div class="line">	_videoPlayer-&gt;setPosition(centerPos);</div><div class="line">	_videoPlayer-&gt;setAnchorPoint(Vec2::ANCHOR_MIDDLE);</div><div class="line">	_videoPlayer-&gt;setContentSize(Size(_visibleRect.size.width * <span class="number">0.8f</span>, _visibleRect.size.height * <span class="number">0.8f</span>));</div><div class="line">	<span class="keyword">this</span>-&gt;addChild(_videoPlayer);</div><div class="line">    </div><div class="line">	_videoPlayer-&gt;setFileName(<span class="string">"cocosvideo.mp4"</span>);</div><div class="line">	_videoPlayer-&gt;play();</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
