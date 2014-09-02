@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://jkun.github.io/"/>
-  <updated>2014-08-31T02:45:31.939Z</updated>
+  <updated>2014-09-02T07:38:09.588Z</updated>
   <id>http://jkun.github.io/</id>
   
   <author>
@@ -15,11 +15,46 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[CCEventDispatcher源码阅读]]></title>
+    <link href="http://jkun.github.io/2014/09/02/Read-CCEventDispatcher/"/>
+    <id>http://jkun.github.io/2014/09/02/Read-CCEventDispatcher/</id>
+    <published>2014-09-02T07:29:36.000Z</published>
+    <updated>2014-09-02T07:36:59.000Z</updated>
+    <content type="html"><![CDATA[<p><code>EventListenerVector</code>类中有三个参数，<code>vector&lt;EventListener*&gt; * _fixedListeners</code>,<code>vector&lt;EventListener*&gt; *_sceneGraphListeners</code> ,<code>ssize_t _gt0Index</code><br><code>EventDispatcher</code>中保存有一下几个map<br><code>unordered_map&lt;EventListener::ListenerID,EventListenerVector *&gt; _listenerMap</code>  用来将<code>ListenerID</code>和<code>EventListenerVector</code>进行绑定<br><code>unordered_map&lt;EventListener::ListenerID,DirtyFlag&gt; _priorityDirtyFlagMap</code>用来保存<code>ListenerID</code>和<code>DirtyFlag</code>的对应关系<br> <a id="more"></a><br><code>unordered_map&lt;Node *,vector&lt;EventListener*&gt;*&gt; _nodeListenersMap</code> 用来存储<code>Node*</code>和<code>vector&lt;EventListener&gt; *</code>的对应关系</p>
+<p><code>unordered_map&lt;Node *,int&gt; _nodePriorityMap</code>用来存储<code>Node *</code>的优先级</p>
+<p><code>unordered_map&lt;float,vector&lt;Node*&gt; &gt; _globalZOrderNodeMap</code>用来保存<code>Node *</code>的<code>zorder</code></p>
+<p><code>vector&lt;EventListener *&gt; _toAddedListeners</code>用来保存即将保存的<code>EventListener*</code><br><code>set&lt;Node*&gt; _dirtyNodes</code>用来保存<code>Node</code>的<code>dirty flag</code></p>
+<p><code>addEventListener(EventListener* listener)</code> 函数的使用</p>
+<p>添加事件，如果当前正处在派发状态，则将listener添加到_toAddedListeners中，否则调用forceAddEventListener添加事件。在<code>forceAddEventListener</code>中，首先获取<code>listener</code>的<code>LisenerId</code>，然后遍历_listenerMap查看时候有这个ID的EventListenerVector,如果有则将其pushback到vector中，如果没有，则新建一个vector然后将其进行添加。而在调用<code>EventListenerVector</code>的<code>push_back</code>的时候，是需要判断这个listener的Priority是否为0，如果为0，则说明这个listener是按照对应node的scenepriority来进行排序的，因此需要添加到_sceneGraphListeners中，否则添加到_fixedListener中<br>添加之后，需要设置其dirtyflag。调用setDirty,并在_priorityDirtyFlagMap中将这个listenerId添加到相应的Map中，如果已经存在则进行一个或操作。因此我认为dirtyflag说明的是对应listenerId的listener中是fixed或者sensebased的优先级的情况。</p>
+<p>然后嗲用<code>associateNodeAndEventListener</code>将对应的Node和listener添加到_nodeListenersMap中</p>
+<p><code>vector&lt;EventListener*&gt; *_fixedListeners</code><br><code>vector&lt;EventListener* * _sceneGraphListeners</code><br><code>ssize_t _gt0Index</code></p>
+<p><code>unordered_map&lt;EventListener::ListenerID,EventListenerVector*&gt; _listenerMap</code><br>写：在<code>forceAddEventListener</code>中调用<code>insert</code>进行数据的添加。将<code>listenerId</code>和<code>EventListenerVector</code>进行绑定</p>
+<p><code>unordered_map&lt;EventLIstener::ListenerID,DirtyFlag&gt; _priorityDirtyFlagMap</code><br>写：在<code>setDirty</code>函数中调用<code>insert</code>将数据写入，这个数据结构将<code>ListenerID</code>和<code>DirtyFlag</code>进行绑定</p>
+<p><code>unordered_map&lt;Node *,vector&lt;EventLisener*&gt; *&gt; _nodelistersMap</code><br>写：调用<code>associateNodeAndEventListener</code>将<code>node</code>和一些列的<code>EventListener</code>进行绑定</p>
+<p><code>unordered_map&lt;NOde *,int&gt; _nodePriorityMap</code></p>
+<p><code>unordered_map&lt;float,vector&lt;Node*&gt; &gt; _globalZOrderNodeMap</code></p>
+<p><code>vector&lt;EventListener*&gt; _toAddedListeners</code><br>写：在<code>addEventListener</code>函数中进行<code>push_back</code>，如果处于派发状态，则<code>listener</code>添加到<code>_toAddedListeners</code>中</p>
+<p><code>dispatchEvent</code>中进行实际的派发，而具体的实现，是在此函数的一个<code>lambda</code>函数<code>onEvent</code>进行调用的。</p>
+<blockquote>
+<p>总的来说，用户调用<code>addEventListenerWithSceneGraphPriority</code>等相关函数将<code>Listener</code>添加到相应的Map中，而系统根据事件监听，当监听到相应事件之后嗲用相应的<code>dispatchEvent</code>将消息发送出去，并使得相应的回调函数进行执行</p>
+</blockquote>
+]]></content>
+    <summary type="html"><![CDATA[<p><code>EventListenerVector</code>类中有三个参数，<code>vector&lt;EventListener*&gt; * _fixedListeners</code>,<code>vector&lt;EventListener*&gt; *_sceneGraphListeners</code> ,<code>ssize_t _gt0Index</code><br><code>EventDispatcher</code>中保存有一下几个map<br><code>unordered_map&lt;EventListener::ListenerID,EventListenerVector *&gt; _listenerMap</code>  用来将<code>ListenerID</code>和<code>EventListenerVector</code>进行绑定<br><code>unordered_map&lt;EventListener::ListenerID,DirtyFlag&gt; _priorityDirtyFlagMap</code>用来保存<code>ListenerID</code>和<code>DirtyFlag</code>的对应关系<br> ]]></summary>
+    
+      <category term="cocos2dx" scheme="http://jkun.github.io/tags/cocos2dx/"/>
+    
+      <category term="源码阅读" scheme="http://jkun.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"/>
+    
+      <category term="C++" scheme="http://jkun.github.io/tags/C++/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[cocos2dx_video]]></title>
     <link href="http://jkun.github.io/2014/08/28/cocos2dx_video/"/>
     <id>http://jkun.github.io/2014/08/28/cocos2dx_video/</id>
     <published>2014-08-28T14:49:05.000Z</published>
-    <updated>2014-08-29T00:42:11.000Z</updated>
+    <updated>2014-09-02T07:32:58.000Z</updated>
     <content type="html"><![CDATA[<p>这篇文章主要总结在android上使用cocos2dx进行视频播放功能的使用。<br>一开始没有注意到cocos2dx的新版本已经集成这个功能，所以一直打算使用FFMpeg来进行相关的开发，经过同学提醒，使用cocos2dX自带的API，使得开发难度大大降低，只需要调用相关的API即可。</p>
 <p>在Cocos2dx中，进行视频播放的类为<code>VideoPlayer</code>，需要包含<code>ui/UIVideoPlayer.h</code>，然后可以再程序中使用<code>using namespace cocos2d::experimental::ui;</code>将命名空间引入进来。下边代码就是在程序启动之后即可播放相应的视频<br> <a id="more"></a></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">bool</span> HelloWorld::init()</div><div class="line">{</div><div class="line">    <span class="comment">//////////////////////////////</span></div><div class="line">    <span class="comment">// 1. super init first</span></div><div class="line">    <span class="keyword">if</span> ( !Layer::init() )</div><div class="line">    {</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    }</div><div class="line">    </div><div class="line">	_visibleRect = Director::getInstance()-&gt;getOpenGLView()-&gt;getVisibleRect();</div><div class="line">	MenuItemFont::setFontSize(<span class="number">16</span>);</div><div class="line"></div><div class="line">	<span class="keyword">auto</span> centerPos = Vec2(_visibleRect.origin.x + _visibleRect.size.width / <span class="number">2</span>, _visibleRect.origin.y + _visibleRect.size.height / <span class="number">2</span>);</div><div class="line"></div><div class="line">	_videoPlayer = VideoPlayer::create();</div><div class="line">	_videoPlayer-&gt;setPosition(centerPos);</div><div class="line">	_videoPlayer-&gt;setAnchorPoint(Vec2::ANCHOR_MIDDLE);</div><div class="line">	_videoPlayer-&gt;setContentSize(Size(_visibleRect.size.width * <span class="number">0.8f</span>, _visibleRect.size.height * <span class="number">0.8f</span>));</div><div class="line">	<span class="keyword">this</span>-&gt;addChild(_videoPlayer);</div><div class="line">    </div><div class="line">	_videoPlayer-&gt;setFileName(<span class="string">"cocosvideo.mp4"</span>);</div><div class="line">	_videoPlayer-&gt;play();</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
@@ -29,6 +64,8 @@
 ]]></content>
     <summary type="html"><![CDATA[<p>这篇文章主要总结在android上使用cocos2dx进行视频播放功能的使用。<br>一开始没有注意到cocos2dx的新版本已经集成这个功能，所以一直打算使用FFMpeg来进行相关的开发，经过同学提醒，使用cocos2dX自带的API，使得开发难度大大降低，只需要调用相关的API即可。</p>
 <p>在Cocos2dx中，进行视频播放的类为<code>VideoPlayer</code>，需要包含<code>ui/UIVideoPlayer.h</code>，然后可以再程序中使用<code>using namespace cocos2d::experimental::ui;</code>将命名空间引入进来。下边代码就是在程序启动之后即可播放相应的视频<br> ]]></summary>
+    
+      <category term="cocos2dx" scheme="http://jkun.github.io/tags/cocos2dx/"/>
     
   </entry>
   

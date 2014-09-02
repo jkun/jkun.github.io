@@ -52,6 +52,39 @@
     <header>
       
   
+    <h1 class="title"><a href="/2014/09/02/Read-CCEventDispatcher/">CCEventDispatcher源码阅读</a></h1>
+  
+
+      
+      <time datetime="2014-09-02T07:29:36.000Z">Sep 2 2014</time>
+      
+    </header>
+    <div class="entry">
+      
+        <p><code>EventListenerVector</code>类中有三个参数，<code>vector&lt;EventListener*&gt; * _fixedListeners</code>,<code>vector&lt;EventListener*&gt; *_sceneGraphListeners</code> ,<code>ssize_t _gt0Index</code><br><code>EventDispatcher</code>中保存有一下几个map<br><code>unordered_map&lt;EventListener::ListenerID,EventListenerVector *&gt; _listenerMap</code>  用来将<code>ListenerID</code>和<code>EventListenerVector</code>进行绑定<br><code>unordered_map&lt;EventListener::ListenerID,DirtyFlag&gt; _priorityDirtyFlagMap</code>用来保存<code>ListenerID</code>和<code>DirtyFlag</code>的对应关系<br> 
+      
+    </div>
+    
+      
+      <footer>
+        <div class="alignleft">
+          <a href="/2014/09/02/Read-CCEventDispatcher/#more" class="more-link">Read More ›</a>
+        </div>
+        <div class="clearfix"></div>
+      </footer>
+      
+    
+  </div>
+</article>
+
+
+
+
+<article class="post">
+  <div class="post-content">
+    <header>
+      
+  
     <h1 class="title"><a href="/2014/08/28/cocos2dx_video/">cocos2dx_video</a></h1>
   
 
