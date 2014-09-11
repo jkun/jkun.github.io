@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://jkun.github.io/"/>
-  <updated>2014-09-06T01:50:00.466Z</updated>
+  <updated>2014-09-11T02:43:22.213Z</updated>
   <id>http://jkun.github.io/</id>
   
   <author>
@@ -13,6 +13,26 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[]]></title>
+    <link href="http://jkun.github.io/2014/09/11/std_min_error/"/>
+    <id>http://jkun.github.io/2014/09/11/std_min_error/</id>
+    <published>2014-09-11T02:43:15.000Z</published>
+    <updated>2014-09-11T02:43:15.000Z</updated>
+    <content type="html"><![CDATA[<p>title: 编译min函数是出现错误的相关解决方案<br>date: 2014-09-11 02:31:22</p>
+<h2 id="tags:[_C++_]">tags:[ C++ ]</h2>
+<p>在vs下编程有时会遇到如下错误<br>error C2589: ‘(‘ : illegal token on right side of ‘::’<br>error C2059: syntax error : ‘::’<br>定位到出错行，是std::min函数的使用错误。<br> <a id="more"></a><br>如下是一个典型代码示例</p>
+<p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;algorithm&gt;</span></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;iostream&gt;</span></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;Windows.h&gt;</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> main(){</div><div class="line">	<span class="keyword">int</span> k=std::min(<span class="number">3</span>,<span class="number">2</span>);</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;k&lt;&lt;endl;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">}</div></pre></td></tr></table></figure><br>这里出错的主要原因是在<code>windows.h</code>中有一个宏为：<code>#define min(a,b)            (((a) &lt; (b)) ? (a) : (b))</code> 所以在宏展开过程中就会将上述函数进行展开而此时已经不是<code>std</code>中具体的那个<code>min</code>函数了。<br>如下是几种解决方案：<br>使用<code>#undef min</code></p>
+<p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;algorithm&gt;</span></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;iostream&gt;</span></div><div class="line"></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;Windows.h&gt;</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> main(){</div><div class="line"><span class="preprocessor">#<span class="keyword">undef</span> min</span></div><div class="line">	<span class="keyword">int</span> k=std::min(<span class="number">3</span>,<span class="number">2</span>);</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;k&lt;&lt;endl;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">}</div></pre></td></tr></table></figure><br>使用括号</p>
+<p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;algorithm&gt;</span></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;iostream&gt;</span></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;Windows.h&gt;</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> main(){</div><div class="line">	<span class="keyword">int</span> k=(std::min)(<span class="number">3</span>,<span class="number">2</span>);</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;k&lt;&lt;endl;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">}</div></pre></td></tr></table></figure><br>使用#define NOMINMAX</p>
+<p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;algorithm&gt;</span></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;iostream&gt;</span></div><div class="line"><span class="preprocessor">#<span class="keyword">define</span> NOMINMAX</span></div><div class="line"><span class="preprocessor">#<span class="keyword">include</span>&lt;Windows.h&gt;</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">int</span> main(){</div><div class="line">	<span class="keyword">int</span> k=std::min(<span class="number">3</span>,<span class="number">2</span>);</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;k&lt;&lt;endl;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">}</div></pre></td></tr></table></figure><br>自我感觉是用第二种方法最好，因为这样既不影响原有min宏的使用，也能很好的解决问题。第一种方法简单粗暴，可能会对min原有宏的使用产生不良的影响，而第三种方法也比较简单，但如果是使用第三方库，需要在每一个的<code>windows.h</code>包含之前都要加上<code>#define NOMINMAX</code>具体实现起来有点儿困难。</p>
+]]></content>
+    <summary type="html"><![CDATA[<p>title: 编译min函数是出现错误的相关解决方案<br>date: 2014-09-11 02:31:22</p>
+<h2 id="tags:[_C++_]">tags:[ C++ ]</h2>
+<p>在vs下编程有时会遇到如下错误<br>error C2589: ‘(‘ : illegal token on right side of ‘::’<br>error C2059: syntax error : ‘::’<br>定位到出错行，是std::min函数的使用错误。<br> ]]></summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[CCEventDispatcher源码阅读]]></title>
