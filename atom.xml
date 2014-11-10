@@ -3,9 +3,9 @@
   <title><![CDATA[阿坤的点点滴滴]]></title>
   
   <link href="/atom.xml" rel="self"/>
-  <link href="http://jkun.github.io/"/>
-  <updated>2014-10-11T04:30:54.023Z</updated>
-  <id>http://jkun.github.io/</id>
+  <link href="http://zhaojkun.com/"/>
+  <updated>2014-11-10T10:45:27.813Z</updated>
+  <id>http://zhaojkun.com/</id>
   
   <author>
     <name><![CDATA[Zhao Jiangkun]]></name>
@@ -16,8 +16,8 @@
   
   <entry>
     <title><![CDATA[编译min函数是出现错误的相关解决方案]]></title>
-    <link href="http://jkun.github.io/2014/09/11/std_min_error/"/>
-    <id>http://jkun.github.io/2014/09/11/std_min_error/</id>
+    <link href="http://zhaojkun.com/2014/09/11/std_min_error/"/>
+    <id>http://zhaojkun.com/2014/09/11/std_min_error/</id>
     <published>2014-09-11T02:31:22.000Z</published>
     <updated>2014-09-11T02:48:53.000Z</updated>
     <content type="html"><![CDATA[<p>在vs下编程有时会遇到如下错误<br>error C2589: ‘(‘ : illegal token on right side of ‘::’<br>error C2059: syntax error : ‘::’<br>定位到出错行，是std::min函数的使用错误。<br> <a id="more"></a><br>如下是一个典型代码示例</p>
@@ -28,14 +28,14 @@
 ]]></content>
     <summary type="html"><![CDATA[<p>在vs下编程有时会遇到如下错误<br>error C2589: ‘(‘ : illegal token on right side of ‘::’<br>error C2059: syntax error : ‘::’<br>定位到出错行，是std::min函数的使用错误。<br> ]]></summary>
     
-      <category term="C++" scheme="http://jkun.github.io/tags/C++/"/>
+      <category term="C++" scheme="http://zhaojkun.com/tags/C++/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[CCEventDispatcher源码阅读]]></title>
-    <link href="http://jkun.github.io/2014/09/02/Read-CCEventDispatcher/"/>
-    <id>http://jkun.github.io/2014/09/02/Read-CCEventDispatcher/</id>
+    <link href="http://zhaojkun.com/2014/09/02/Read-CCEventDispatcher/"/>
+    <id>http://zhaojkun.com/2014/09/02/Read-CCEventDispatcher/</id>
     <published>2014-09-02T07:29:36.000Z</published>
     <updated>2014-09-02T07:36:59.000Z</updated>
     <content type="html"><![CDATA[<p><code>EventListenerVector</code>类中有三个参数，<code>vector&lt;EventListener*&gt; * _fixedListeners</code>,<code>vector&lt;EventListener*&gt; *_sceneGraphListeners</code> ,<code>ssize_t _gt0Index</code><br><code>EventDispatcher</code>中保存有一下几个map<br><code>unordered_map&lt;EventListener::ListenerID,EventListenerVector *&gt; _listenerMap</code>  用来将<code>ListenerID</code>和<code>EventListenerVector</code>进行绑定<br><code>unordered_map&lt;EventListener::ListenerID,DirtyFlag&gt; _priorityDirtyFlagMap</code>用来保存<code>ListenerID</code>和<code>DirtyFlag</code>的对应关系<br> <a id="more"></a><br><code>unordered_map&lt;Node *,vector&lt;EventListener*&gt;*&gt; _nodeListenersMap</code> 用来存储<code>Node*</code>和<code>vector&lt;EventListener&gt; *</code>的对应关系</p>
@@ -59,18 +59,18 @@
 ]]></content>
     <summary type="html"><![CDATA[<p><code>EventListenerVector</code>类中有三个参数，<code>vector&lt;EventListener*&gt; * _fixedListeners</code>,<code>vector&lt;EventListener*&gt; *_sceneGraphListeners</code> ,<code>ssize_t _gt0Index</code><br><code>EventDispatcher</code>中保存有一下几个map<br><code>unordered_map&lt;EventListener::ListenerID,EventListenerVector *&gt; _listenerMap</code>  用来将<code>ListenerID</code>和<code>EventListenerVector</code>进行绑定<br><code>unordered_map&lt;EventListener::ListenerID,DirtyFlag&gt; _priorityDirtyFlagMap</code>用来保存<code>ListenerID</code>和<code>DirtyFlag</code>的对应关系<br> ]]></summary>
     
-      <category term="cocos2dx" scheme="http://jkun.github.io/tags/cocos2dx/"/>
+      <category term="cocos2dx" scheme="http://zhaojkun.com/tags/cocos2dx/"/>
     
-      <category term="源码阅读" scheme="http://jkun.github.io/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"/>
+      <category term="源码阅读" scheme="http://zhaojkun.com/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"/>
     
-      <category term="C++" scheme="http://jkun.github.io/tags/C++/"/>
+      <category term="C++" scheme="http://zhaojkun.com/tags/C++/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[cocos2dx_video]]></title>
-    <link href="http://jkun.github.io/2014/08/28/cocos2dx_video/"/>
-    <id>http://jkun.github.io/2014/08/28/cocos2dx_video/</id>
+    <link href="http://zhaojkun.com/2014/08/28/cocos2dx_video/"/>
+    <id>http://zhaojkun.com/2014/08/28/cocos2dx_video/</id>
     <published>2014-08-28T14:49:05.000Z</published>
     <updated>2014-09-02T07:32:58.000Z</updated>
     <content type="html"><![CDATA[<p>这篇文章主要总结在android上使用cocos2dx进行视频播放功能的使用。<br>一开始没有注意到cocos2dx的新版本已经集成这个功能，所以一直打算使用FFMpeg来进行相关的开发，经过同学提醒，使用cocos2dX自带的API，使得开发难度大大降低，只需要调用相关的API即可。</p>
@@ -83,7 +83,7 @@
     <summary type="html"><![CDATA[<p>这篇文章主要总结在android上使用cocos2dx进行视频播放功能的使用。<br>一开始没有注意到cocos2dx的新版本已经集成这个功能，所以一直打算使用FFMpeg来进行相关的开发，经过同学提醒，使用cocos2dX自带的API，使得开发难度大大降低，只需要调用相关的API即可。</p>
 <p>在Cocos2dx中，进行视频播放的类为<code>VideoPlayer</code>，需要包含<code>ui/UIVideoPlayer.h</code>，然后可以再程序中使用<code>using namespace cocos2d::experimental::ui;</code>将命名空间引入进来。下边代码就是在程序启动之后即可播放相应的视频<br> ]]></summary>
     
-      <category term="cocos2dx" scheme="http://jkun.github.io/tags/cocos2dx/"/>
+      <category term="cocos2dx" scheme="http://zhaojkun.com/tags/cocos2dx/"/>
     
   </entry>
   
